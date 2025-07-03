@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin</title>
+  <title>Admin Panel</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body.dark {
-      background: #111;
+      background-color: #121212;
       color: white;
     }
   </style>
@@ -22,7 +22,7 @@
   <button onclick="createUser()">Create</button>
   <p id="res"></p>
 
-  <!-- User List + Set Salary -->
+  <!-- User List + Salary Status -->
   <h3>User List</h3>
   <ul id="list"></ul>
 
@@ -42,27 +42,33 @@
   <button onclick="logout()">Logout</button>
 
   <script>
+    const backendURL = "https://employee-salary-backend.onrender.com";
+
     function refresh() {
-      fetch("https://employee-salary-backend.onrender.com/api/admin/list-users")
-        .then(r => r.json()).then(data => {
+      fetch(`${backendURL}/api/admin/list-users`)
+        .then(r => r.json())
+        .then(data => {
+          const list = document.getElementById("list");
           list.innerHTML = "";
+
           data.forEach(u => {
             const li = document.createElement("li");
             li.innerHTML = u.username + " — ";
 
             const d = document.createElement("input");
-            d.type = "date"; d.value = u.salaryStatus.date || "";
-            li.append(d);
+            d.type = "date";
+            d.value = u.salaryStatus.date || "";
+            li.appendChild(d);
 
             const c = document.createElement("input");
             c.type = "checkbox";
             c.checked = u.salaryStatus.isCredited;
-            li.append(c);
+            li.appendChild(c);
 
             const btn = document.createElement("button");
             btn.innerText = "Set";
             btn.onclick = () => {
-              fetch("https://employee-salary-backend.onrender.com/api/admin/set-salary", {
+              fetch(`${backendURL}/api/admin/set-salary`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -70,10 +76,13 @@
                   date: d.value,
                   isCredited: c.checked
                 })
-              }).then(r => r.json()).then(() => refresh());
+              })
+              .then(r => r.json())
+              .then(() => refresh());
             };
-            li.append(btn);
-            list.append(li);
+
+            li.appendChild(btn);
+            list.appendChild(li);
           });
         });
     }
@@ -84,20 +93,20 @@
       const role = document.getElementById("role").value;
       const email = document.getElementById("email").value;
 
-      fetch("https://employee-salary-backend.onrender.com/api/admin/create-user", {
+      fetch(`${backendURL}/api/admin/create-user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password, role, email }),
       })
-        .then((res) => res.json())
-        .then((data) => {
-          res.innerText = data.message || "User created successfully";
-          refresh();
-        })
-        .catch((err) => {
-          console.error("Error:", err);
-          alert("Error creating user");
-        });
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("res").innerText = data.message || "User created successfully";
+        refresh();
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("Error creating user");
+      });
     }
 
     function toggleTheme() {
@@ -105,32 +114,39 @@
     }
 
     function resetAll() {
-      fetch("https://employee-salary-backend.onrender.com/api/admin/reset", {
+      fetch(`${backendURL}/api/admin/reset`, {
         method: "POST"
-      }).then(res => res.json()).then(msg => alert(msg.message));
+      })
+      .then(res => res.json())
+      .then(msg => alert(msg.message));
     }
 
     function changePassword() {
       const oldPass = document.getElementById("oldPass").value;
       const newPass = document.getElementById("newPass").value;
-      fetch("https://employee-salary-backend.onrender.com/api/admin/change-password", {
+      const username = sessionStorage.getItem("user");
+
+      fetch(`${backendURL}/api/auth/change-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
-      }).then(res => res.json()).then(data => {
+        body: JSON.stringify({ username, oldPassword: oldPass, newPassword: newPass })
+      })
+      .then(res => res.json())
+      .then(data => {
         alert(data.message);
       });
     }
 
     function logout() {
       sessionStorage.clear();
-      location.href = "login.html";
+      location.href = "index.html"; // ✅ match your actual login page name
     }
 
     refresh();
   </script>
 </body>
 </html>
+
 
 
 
