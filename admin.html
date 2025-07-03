@@ -54,6 +54,11 @@
           const list = document.getElementById("list");
           list.innerHTML = "";
 
+          if (data.length === 0) {
+            list.innerHTML = "<li>No users found. Please create users.</li>";
+            return;
+          }
+
           data.forEach(u => {
             const li = document.createElement("li");
             li.innerHTML = `${u.username} — `;
@@ -71,6 +76,11 @@
             const btn = document.createElement("button");
             btn.innerText = "Set";
             btn.onclick = () => {
+              if (!d.value) {
+                alert("Please select a date");
+                return;
+              }
+
               fetch(`${backendURL}/api/admin/set-salary`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -98,6 +108,11 @@
       const role = document.getElementById("role").value;
       const email = document.getElementById("email").value;
 
+      if (!username || !password || !role || !email) {
+        alert("Please fill all fields");
+        return;
+      }
+
       fetch(`${backendURL}/api/admin/create-user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -117,13 +132,21 @@
     function resetAll() {
       fetch(`${backendURL}/api/admin/reset`, { method: "POST" })
         .then(res => res.json())
-        .then(msg => alert(msg.message));
+        .then(msg => {
+          alert(msg.message);
+          refresh(); // ✅ Refresh after reset
+        });
     }
 
     function changePassword() {
       const oldPass = document.getElementById("oldPass").value;
       const newPass = document.getElementById("newPass").value;
       const username = sessionStorage.getItem("user");
+
+      if (!oldPass || !newPass) {
+        alert("Fill both password fields");
+        return;
+      }
 
       fetch(`${backendURL}/api/auth/change-password`, {
         method: "POST",
@@ -142,13 +165,15 @@
 
     function logout() {
       sessionStorage.clear();
-      location.href = "index.html"; // 👈 Make sure this file exists
+      location.href = "index.html"; // 👈 Match your login page
     }
 
+    // Initial call
     refresh();
   </script>
 </body>
 </html>
+
 
 
 
