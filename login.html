@@ -9,7 +9,7 @@
   <p id="msg"></p>
   <script>
     function login() {
-      fetch("http://localhost:5000/api/auth/login", {
+      fetch("https://employee-salary-backend.onrender.com/api/auth/login", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ username: user.value, password: pass.value })

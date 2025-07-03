@@ -8,7 +8,7 @@
   <script>
     const user = sessionStorage.getItem("user");
     today.innerText = new Date().toLocaleDateString();
-    fetch(`http://localhost:5000/api/user/status/${user}`)
+    fetch(`https://employee-salary-backend.onrender.com/api/user/status/${user}`)
       .then(r=>r.json()).then(s=>{
         stat.innerText = s.isCredited
           ? `✅ Salary credited on ${new Date(s.date).toLocaleDateString()}`

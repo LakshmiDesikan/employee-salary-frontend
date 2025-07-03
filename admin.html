@@ -12,7 +12,7 @@
   <ul id="list"></ul>
   <script>
     function refresh() {
-      fetch("http://localhost:5000/api/admin/list-users")
+      fetch("https://employee-salary-backend.onrender.com/api/admin/list-users")
         .then(r=>r.json()).then(data=>{
           list.innerHTML = "";
           data.forEach(u=>{
@@ -28,7 +28,7 @@
             const btn = document.createElement("button");
             btn.innerText = "Set";
             btn.onclick = () => {
-              fetch("http://localhost:5000/api/admin/set-salary", {
+              fetch("https://employee-salary-backend.onrender.com/api/admin/set-salary",{
                 method: "POST",
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({
@@ -44,7 +44,7 @@
         });
     }
     function create() {
-      fetch("http://localhost:5000/api/admin/create-user", {
+      fetch("https://employee-salary-backend.onrender.com/api/admin/create-user", {
         method:"POST",
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({ username: newu.value, password: newp.value })
@@ -63,7 +63,7 @@
 <button onclick="resetAll()">Reset All Data</button>
 <script>
   function resetAll() {
-    fetch("http://localhost:5000/api/admin/reset", { method: "POST" })
+    fetch("https://employee-salary-backend.onrender.com/api/admin/reset", { method: "POST" })
       .then(res => res.json()).then(msg => alert(msg.message));
   }
 </script>
