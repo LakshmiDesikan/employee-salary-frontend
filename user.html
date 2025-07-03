@@ -30,7 +30,7 @@
     const user = sessionStorage.getItem("user");
 
     if (!user) {
-      location.href = "login.html"; // Redirect if not logged in
+      location.href = "index.html"; // Redirect if not logged in
     }
 
     // Show today's date
@@ -76,7 +76,7 @@
     // Logout
     function logout() {
       sessionStorage.clear();
-      location.href = "login.html";
+      location.href = "index.html";
     }
   </script>
 </body>
