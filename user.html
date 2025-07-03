@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><title>User</title><link rel="stylesheet" href="style.css"></head>
+<body>
+  <h2>User Dashboard</h2>
+  <p>Date: <span id="today"></span></p>
+  <div class="status" id="stat"></div>
+  <script>
+    const user = sessionStorage.getItem("user");
+    today.innerText = new Date().toLocaleDateString();
+    fetch(`http://localhost:5000/api/user/status/${user}`)
+      .then(r=>r.json()).then(s=>{
+        stat.innerText = s.isCredited
+          ? `✅ Salary credited on ${new Date(s.date).toLocaleDateString()}`
+          : `❌ Salary not credited (due today: ${new Date(s.date).toLocaleDateString()})`;
+      });
+  </script>
+</body>
+</html>
+<button onclick="toggleTheme()">Toggle Theme</button>
+<script>
+  function toggleTheme() {
+    document.body.classList.toggle("dark");
+  }
+</script>
+<input id="oldPass" type="password" placeholder="Old Password">
+<input id="newPass" type="password" placeholder="New Password">
+<button onclick="changePassword()">Change Password</button>
