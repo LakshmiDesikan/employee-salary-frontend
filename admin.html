@@ -82,4 +82,32 @@
     }
   </script>
 </body>
+<input type="text" placeholder="Username" id="username">
+<input type="password" placeholder="Password" id="password">
+<input type="text" placeholder="Role" id="role">
+<input type="email" placeholder="Email" id="email">  ✅ ← user enters this!
+<button onclick="createUser()">Create User</button>
+<script>
+  function createUser() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+    const email = document.getElementById("email").value;
+
+    fetch("https://employee-salary-backend-url.onrender.com/api/admin/create-user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, role, email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert(data.message || "User created successfully");
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+        alert("Error creating user");
+      });
+  }
+</script>
+
 
