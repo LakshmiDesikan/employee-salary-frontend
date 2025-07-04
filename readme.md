@@ -4,7 +4,6 @@ This is the frontend of the **Employee Salary Tracker Web Application**, designe
 
 ## 🔗 Live Demo
 ➡️ [Netlify Live Site](https://gorgeous-baklava-f5fbcd.netlify.app/) 
-(*Replace with your actual Netlify link*)
 
 ## 📦 Tech Stack
 - HTML
